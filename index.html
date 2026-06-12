@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Spotlessfy</title>
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth !important;
+        }
+        body {
+            background-image: url('photos/bg.jpeg'); 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            color: white; 
+            background-color: #1a1e29; 
+            margin: 0;
+            min-height: 100vh; 
+        }
+        header {
+            background: linear-gradient(134deg, #e91369 0%, #9237ee 100%);
+            color: wheat;
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 15px 10px rgba(0,0,0,0.4);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in;
+            display: inline-block;
+            white-space: nowrap;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        nav ul a:hover {
+            background-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        nav ul li a:active {
+            transform: translateY(0);
+        }
+        #home-section, #about-section, #footer-section {
+         scroll-margin-top: 100px;
+        }
+        @media screen and (max-width: 768px) {
+            nav {
+                flex-wrap: nowrap;
+                gap: 10px;
+                padding: 0 10px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            nav ul {
+                gap: 10px;
+                margin: 0 5px;
+                padding: 0;
+            }
+            nav ul li a {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+        }
+
+        /* ABOUT SECTION */
+        .about-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            background-color: #fee5c5; 
+            border: 2px solid #dc3545; 
+            border-radius: 8px;        
+            padding: 40px 50px;
+            text-align: left;
+            color: #333333;
+            font-family: Arial, Helvetica, sans-serif; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .about-container h2 {
+            color: #0000ff; 
+            text-align: center;
+            text-decoration: underline;
+            margin-bottom: 25px;
+            font-weight: 500;
+            font-size: 28px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .about-container h3 {
+            color: #0000ff; 
+            margin-top: 30px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            font-weight: 500;
+            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .about-container p, .about-container ol {
+            line-height: 1.6;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+        .about-container ol {
+            margin-left: 20px;
+        }
+        strong {
+            color: #dc3545; 
+            font-weight: bold;
+        }
+        .purple-text {
+            color: #800080; 
+        }
+
+        .banner-slider {
+            width: 100%;
+            height: 450px; 
+            position: relative;
+            background-color: #0b111e; 
+            overflow: hidden;
+            margin-top: 70px;
+        }
+        .image-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth; 
+        }
+        .image-container::-webkit-scrollbar {
+            display: none;
+        }
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            scroll-snap-align: start; 
+        }
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center; 
+        }
+        .arrow {
+            position: absolute;
+            top: 50%; 
+            transform: translateY(-50%); 
+            background-color: rgba(0, 0, 0, 0.6); 
+            color: white;
+            font-size: 28px;
+            padding: 12px 18px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50%; 
+            z-index: 10; 
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            scale: 1.1;
+        }
+        .prev-arrow { left: 25px; }
+        .next-arrow { right: 25px; }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 8px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            max-width: 350px;
+            width: 100%;
+        }
+        .search-box:focus-within {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(146, 55, 238, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 8px 15px;
+            font-size: 15px;
+            width: 100%;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .search-box button {
+            background: white;
+            color: #fd0065;
+            border: none;
+            outline: none;
+            padding: 8px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .search-box button:hover {
+            background: #e54c89;
+            color: white;
+            transform: scale(1.05);
+        }
+        .search-box button:active {
+            transform: scale(0.98);
+        }
+        @media screen and (max-width: 768px) {
+            .search-box {
+                max-width: 90%;
+                margin: 10px auto;
+            }
+        }
+        .hero {
+            text-align: center;
+            padding: 60px 20px 20px 20px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .hero-eyebrow {
+            font-size: 40px;
+            color: rgba(7, 0, 43, 0.8);
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ff006f;
+            text-shadow: 0 0 15px rgba(232, 52, 121, 0.4);
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .hero h2 {
+            display: inline-block;
+            font-size: 42px;
+            vertical-align: middle;
+            margin-left: 10px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .mood-section {
+            padding: 40px 20px 60px 20px;
+            text-align: center;
+            background-color: transparent; 
+        }
+        .mood-title {
+            color: rgb(5, 75, 1);
+            font-size: 32px;
+            margin-bottom: 40px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+        .songs-header .mood-title {
+            text-align: center;
+        }
+        .mood-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap; 
+        }
+
+        /* MOOD CARDS */
+        .mood-card {
+            background-color: white;
+            padding: 30px 20px;
+            border-radius: 4px; 
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .mood-card:hover {
+            transform: translateY(-5px); 
+        }
+        .mood-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 20px;
+        }
+        .mood-card h3 {
+            color: #ff0000; 
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .btn {
+            border: none;
+            outline: none;
+            padding: 10px 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+            max-width: 120px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .btn-happy { background-color: #28a745; }
+        .btn-happy:hover { background-color: #218838; }
+        .btn-sad { background-color: #dc3545; }
+        .btn-sad:hover { background-color: #c82333; }
+        .btn-chill { background-color: #007bff; }
+        .btn-chill:hover { background-color: #0069d9; }
+
+        @media screen and (max-width: 768px) {
+            .mood-container { gap: 20px; }
+            .mood-card { width: 100%; max-width: 320px; }
+        }
+
+        /* SONG CARDS */
+        .mood-songs {
+            display: block; 
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            scroll-margin-top: 100px;
+        }
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+        .song-card {
+            display: flex;
+            flex-direction: column;
+            background: white; 
+            border-radius: 4px; 
+            padding: 15px; 
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .song-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 25px rgba(0,0,0,0.4);
+        }
+        .thumb-wrap {
+            position: relative;
+            width: 100%; 
+            aspect-ratio: 16 / 9;
+            background: #111;
+            overflow: hidden;
+            border-radius: 4px; 
+        }
+        .thumb-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+        .song-card:hover .thumb-wrap img { transform: scale(1.06); }
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .song-card:hover .play-overlay {
+            opacity: 1;
+        }
+        .play-circle {
+            width: 50px;
+            height: 50px;
+            background: #28a745;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .play-circle svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            margin-left: 3px;
+        }
+        .card-info {
+            padding: 15px 0 0 0; 
+            text-align: center; 
+        }
+        .card-title {
+            color: #333333; 
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* FOOTER SECTION */
+        footer {
+            background-color: #441e44; 
+            color: #e2e8f0; 
+            padding: 60px 20px 20px; 
+            font-family: 'Space Grotesk', sans-serif; 
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .footer-container {
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            gap: 40px;
+        }
+        .footer-col {
+            flex: 1; 
+            min-width: 220px;
+        }
+        .footer-col h2.blue-heading {
+            color: #38bdf8; 
+            font-size: 26px; 
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .footer-col h2.green-heading {
+            color: #22c55e; 
+            font-size: 24px; 
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .footer-col p {
+            font-size: 15px; 
+            line-height: 1.6;
+            color: #cbd5e1;
+        }
+        .footer-col ul {
+            list-style: none; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px;
+        }
+        .footer-col ul li {
+            color: #cbd5e1;
+        }
+        .footer-col ul li a {
+            color: #f8fafc; 
+            text-decoration: none; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+            transition: color 0.3s ease;
+            font-size: 15px;
+        }
+        .footer-col ul li a:hover {
+            color: #38bdf8;
+        }
+        .footer-bottom {
+            border-top: 1px solid #334155; 
+            margin-top: 50px; 
+            padding-top: 25px; 
+            text-align: center; 
+            color: #94a3b8; 
+            font-size: 13px;
+        }
+        .footer-bottom p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-banner">
+        <nav>
+            <div class="logo">😎 Spotlessfy</div>
+            <ul>
+                <li><a href="#home-section">Home</a></li>
+                <li><a href="#about-section">About</a></li>
+                <li><a href="#footer-section">Developer</a></li>
+                <li><a href="#footer-section">Contact</a></li>
+            </ul>
+            <div class="search-box">
+                <input type="text" placeholder="What's your mood?">
+                <button><b>Search</b></button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="banner-slider" id="home-section">
+        <a href="#slide-1" class="arrow prev-arrow">&#10094;</a>
+        <a href="#slide-2" class="arrow next-arrow">&#10095;</a>
+        <div class="image-container">
+            <div class="slide" id="slide-1">
+                <img src="photos/banner2.jpg" alt="Banner 1">
+            </div>
+            <div class="slide" id="slide-2">
+                <img src="https://suroj003.github.io/moodify/pexels-cottonbro-5650791.jpg" alt="Banner 2">
+            </div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <p class="hero-eyebrow">Welcome to your mood maker :)</p>
+        <h1>Choose your current mood</h1><h2>😛</h2>
+    </section>
+
+    <section class="mood-section">
+        <h2 class="mood-title">Select Your Mood</h2>
+        <div class="mood-container">
+            <div class="mood-card">
+                <img src="photos/happy.png" alt="Happy" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3143/3143643.png'">
+                <h3>Happy Mood</h3>
+                <a href="#songs-happy" class="btn btn-happy">Explore</a>
+            </div>
+            <div class="mood-card">
+                <img src="photos/sad.png" alt="Sad" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3260/3260838.png'">
+                <h3>Sad Mood</h3>
+                <a href="#songs-sad" class="btn btn-sad">Explore</a>
+            </div>
+            <div class="mood-card">
+                <img src="photos/chill.png" alt="Chill" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3233/3233483.png'">
+                <h3>Chill Mood</h3>
+                <a href="#songs-chill" class="btn btn-chill">Explore</a>
+            </div>
+        </div>
+        
+        <div class="about-container" id="about-section">
+            <b><h2>About Spotlessfy</h2>
+            <p><strong>Spotlessfy</strong> is a simple music discovery web application created to help users find songs based on their current mood. 
+                Music has a strong connection with emotions, and people often choose different songs depending on how they feel. This app makes it easier to quickly explore songs that match your mood.</p>
+            <p>Instead of searching through multiple playlists, Spotlessfy organizes songs into mood categories such as <strong>Happy</strong>, <strong>Sad</strong>, and <strong>Chill</strong>. Each category contains songs that match that emotional vibe so users can instantly discover music that fits how they are feeling.</p>
+            
+            <h3>Why this app was created</h3>
+            <p>Many people listen to music while studying, relaxing, travelling, or when they feel emotional. 
+                Sometimes it becomes difficult to find the right music quickly. 
+                Spotlessfy was created to simplify that experience by grouping songs according to moods so users can easily access the type of music they want.</p>
+            
+            <h3>How to use Spotlessfy</h3>
+            <ol>
+                <li>Open the website and explore the homepage.</li>
+                <li>Select a mood category such as Happy, Sad, or Chill.</li>
+                <li>Browse the list of songs displayed in cards.</li>
+                <li>Click the play button to open the song on YouTube and enjoy the music.</li>
+            </ol>
+            <br>
+            <p class="purple-text">Spotlessfy is built as a beginner-friendly frontend project to demonstrate simple user interface design and an easy way to explore music.</p>
+        </b>
+        </div>
+    </section>
+
+    <div class="mood-songs" id="songs-happy">
+        <div class="songs-header">
+            <div class="mood-title" style="color: #28a745;">
+                <span class="mood-accent"></span>I'm Happy.... 😛
+            </div>
+        </div>
+        <div class="songs-grid">
+            <a class="song-card" href="https://youtu.be/fdubeMFwuGs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/fdubeMFwuGs/mqdefault.jpg" alt="Ilahi" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Ilahi</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/bw7bVpI5VcM" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/bw7bVpI5VcM/mqdefault.jpg" alt="Love You Zindagi" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Love You Zindagi</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/jCEdTq3j-0U" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/jCEdTq3j-0U/mqdefault.jpg" alt="Gallan Goodiyan" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Gallan Goodiyan</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/HgIW7P4dsXU" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/HgIW7P4dsXU/mqdefault.jpg" alt="Naachne De Saare" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Naachne De Saare</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/II2EO3Nw4m0" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/II2EO3Nw4m0/mqdefault.jpg" alt="Badtameez Dil" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Badtameez Dil</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/gXe-KWe-YMs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/gXe-KWe-YMs/mqdefault.jpg" alt="Ude Dil Befikre" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Ude Dil Befikre</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/iwlUeXLPvf0" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/iwlUeXLPvf0/mqdefault.jpg" alt="Kar Gayi Chull" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Kar Gayi Chull</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/Isb7WV4d17I" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/Isb7WV4d17I/mqdefault.jpg" alt="Sooraj Ki Baahon Mein" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Sooraj Ki Baahon Mein</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/6vKucgAeF_Q" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/6vKucgAeF_Q/mqdefault.jpg" alt="Matargashti" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Matargashti</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/cgHLvt0rxmM" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/cgHLvt0rxmM/mqdefault.jpg" alt="Zinda" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Zinda</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/BFMzpC5PNCU" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/BFMzpC5PNCU/mqdefault.jpg" alt="Ooh La La" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Ooh La La</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/WBzG-Mcn4Ko" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/WBzG-Mcn4Ko/mqdefault.jpg" alt="Tumhare Nazro Mein Humein Dekha" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Tumhare Nazro Mein Humein Dekha</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/7wtfhZwyrcc" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/7wtfhZwyrcc/mqdefault.jpg" alt="Believer" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Believer</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=2Chj7DUhv8Y" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/2Chj7DUhv8Y/mqdefault.jpg" alt="Badi Mushkil Hai" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Badi Mushkil Hai</div></div>
+            </a>
+        </div>
+    </div> 
+    <div class="mood-songs" id="songs-sad">
+        <div class="songs-header">
+            <div class="mood-title" style="color: #dc3545;">
+                <span class="mood-accent"></span>I'm Sad.... 😔
+            </div>
+        </div>
+        <div class="songs-grid">
+            <a class="song-card" href="https://www.youtube.com/watch?v=kRsYLmiowmQ" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/kRsYLmiowmQ/mqdefault.jpg" alt="Sanam Teri Kasam" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Sanam Teri Kasam</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=gBvwiYnzlhw" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/gBvwiYnzlhw/mqdefault.jpg" alt="Bewajah" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Bewajah</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=IJq0yyWug1k" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/IJq0yyWug1k/mqdefault.jpg" alt="Tum Hi Ho" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Tum Hi Ho (Aashiqui 2)</div></div>
+            </a>
+            
+            <a class="song-card" href="https://youtu.be/bzSTpdcs-EI" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/bzSTpdcs-EI/mqdefault.jpg" alt="Channa Mereya" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Channa Mereya</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/sK7riqg2mr4" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/sK7riqg2mr4/mqdefault.jpg" alt="Agar Tum Saath Ho" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Agar Tum Saath Ho</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/sVRwZEkXepg" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/sVRwZEkXepg/mqdefault.jpg" alt="Hamari Adhuri Kahani" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Hamari Adhuri Kahani</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/KSGYVl4ZgRs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/KSGYVl4ZgRs/mqdefault.jpg" alt="Lo Maan Liya" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Lo Maan Liya</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/FIu4lel3S_o" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/FIu4lel3S_o/mqdefault.jpg" alt="Main Dhoondne Ko Zamaane Mein" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Main Dhoondne Ko Zamaane Mein</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/AbluPg_E14k" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/AbluPg_E14k/mqdefault.jpg" alt="Tor Ek Kothay" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Tor Ek Kothay</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/FUqzfrNE3C4" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/FUqzfrNE3C4/mqdefault.jpg" alt="Hariye Giyechi" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Hariye Giyechi</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/2AO2Utn2eoU" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/2AO2Utn2eoU/mqdefault.jpg" alt="Phir Le Aaya Dil" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Phir Le Aaya Dil</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/53l2DkivxJs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/53l2DkivxJs/mqdefault.jpg" alt="Tu Jaane Na" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Tu Jaane Na</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/vB1qh0eUv78" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/vB1qh0eUv78/mqdefault.jpg" alt="Lag Ja Gale" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Lag Ja Gale</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/KtlgYxa6BMU" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/KtlgYxa6BMU/mqdefault.jpg" alt="The Night We Met" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">The Night We Met</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=J2JQQm1h6xQ" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/J2JQQm1h6xQ/mqdefault.jpg" alt="Bojhena Shey Bojhena" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Bojhena Shey Bojhena</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=HyLCgkQtluw" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/HyLCgkQtluw/mqdefault.jpg" alt="Roke Na Ruke Naina" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Roke Na Ruke Naina</div></div>
+            </a>
+        </div>
+
+    <div class="mood-songs" id="songs-chill">
+        <div class="songs-header">
+            <div class="mood-title" style="color: #007bff;">
+                <span class="mood-accent"></span>I'm Chill.... 😎
+            </div>
+        </div>
+        <div class="songs-grid">
+            <a class="song-card" href="https://youtu.be/akjdj6iHttY" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/akjdj6iHttY/mqdefault.jpg" alt="Iktara" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Iktara</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/vt4jX0iRgCg" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/vt4jX0iRgCg/mqdefault.jpg" alt="Kho Gaye Hum Kahan" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Kho Gaye Hum Kahan</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/vNSwdLu_ieI" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/vNSwdLu_ieI/mqdefault.jpg" alt="Shaam" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Shaam</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/sOhESxhibAM" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/sOhESxhibAM/mqdefault.jpg" alt="Safarnama" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Safarnama</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/vA86QFrXoho" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/vA86QFrXoho/mqdefault.jpg" alt="Alag Aasmaan" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Alag Aasmaan</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/iOIF74Hk80A" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/iOIF74Hk80A/mqdefault.jpg" alt="Kasoor" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Kasoor</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/PJWemSzExXs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/PJWemSzExXs/mqdefault.jpg" alt="Baarishein" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Baarishein</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/cYOB941gyXI" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/cYOB941gyXI/mqdefault.jpg" alt="Hawayein" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Hawayein</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/jI7FFN4wW5E" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/jI7FFN4wW5E/mqdefault.jpg" alt="Tu Bin Bataye" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Tu Bin Bataye</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/DK_UsATwoxI" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/DK_UsATwoxI/mqdefault.jpg" alt="Nazm Nazm" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Nazm Nazm</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/_dAkj5dxmEM" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/_dAkj5dxmEM/mqdefault.jpg" alt="Aaja Mahi" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Aaja Mahi</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/sRxrwjOtIag" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/sRxrwjOtIag/mqdefault.jpg" alt="All Too Well" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">All Too Well</div></div>
+            </a>
+            <a class="song-card" href="https://youtu.be/QZYDmwpVDGs" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/QZYDmwpVDGs/mqdefault.jpg" alt="Majhey Majhey Tobo" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Majhey Majhey Tobo</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=rkOakcMqJ-8" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/rkOakcMqJ-8/mqdefault.jpg" alt="Chalte Chalte" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Chalte Chalte</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=_DKjY1eTFws" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/_DKjY1eTFws/mqdefault.jpg" alt="Shudhu Tomari Jonyo" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Shudhu Tomari Jonyo</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=90Q5bMN6u2w" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/90Q5bMN6u2w/mqdefault.jpg" alt="Ek Din Aap Yun (Video)" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Ek Din Aap Yun</div></div>
+            </a>
+            <a class="song-card" href="https://www.youtube.com/watch?v=LlI1IkgP6BQ" target="_blank" rel="noopener">
+                <div class="thumb-wrap"><img src="https://img.youtube.com/vi/LlI1IkgP6BQ/mqdefault.jpg" alt="Rang Jo Lagyo" loading="lazy"><div class="play-overlay"><div class="play-circle"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div></div></div>
+                <div class="card-info"><div class="card-title">Rang Jo Lagyo</div></div>
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <footer id="footer-section">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h2 class="blue-heading">Music Vibes</h2>
+                <p>Discover romantic, chill and trending songs from artists like Arijit Singh, Shreya Ghoshal and many more.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h2 class="green-heading">Quick Links</h2>
+                <ul>
+                    <li><a href="#home-section">Home</a></li>
+                    <li><a href="#songs-happy">Trending Songs</a></li>
+                    <li><a href="#songs-chill">Romantic Songs</a></li>
+                    <li><a href="#songs-chill">Chill Songs</a></li>
+                    <li><a href="#songs-happy">Party Songs</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h2 class="green-heading">Popular Artists</h2>
+                <ul>
+                    <li>Arijit Singh</li>
+                    <li>Shreya Ghoshal</li>
+                    <li>Jubin Nautiyal</li>
+                    <li>Raftaar</li>
+                    <li>Zubeen Garg</li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h2 class="green-heading">Follow Me</h2>
+                <ul>
+                    <li>
+                        <a href="https://www.instagram.com/mr.shibam01/" target="_blank">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg> 
+                            Instagram
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/shibam-das-47a0523a6" target="_blank">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> 
+                            LinkedIn
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://sd0221023-cmyk.github.io/Shibam_Portfolio/" target="_blank">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.496-1.1-1.109 0-.612.492-1.109 1.1-1.109s1.1.497 1.1 1.109c0 .613-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.872-1.616 4-1.736 4 1.548v3.359z"/></svg> 
+                            Portfolio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:sd0221023@gmail.com">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg> 
+                            Email
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Music Vibes | Created in 2026</p>
+            <p>Disclaimer: Songs and videos used on this website belong to their respective artists, music labels, and owners. This website does not claim ownership and respects all original creators. This website is created for educational purposes only.</p>
+        </div>
+    </footer>
+</body>
+</html>
